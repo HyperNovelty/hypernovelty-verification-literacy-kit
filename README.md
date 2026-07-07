@@ -30,6 +30,8 @@ The goal is to make verification practical enough to teach, repeat, and improve.
 3. Use the answer key to discuss what changed in confidence after checking evidence.
 4. Try one template from `templates/` on a harmless synthetic example.
 
+For a browser-openable facilitator view, open `labs/ai-literacy-failure-mode-mini-lab/rendered/facilitator-page.html`.
+
 ## Facilitator Flow
 
 Use the lab as a short practice session, not a lecture:
@@ -48,6 +50,7 @@ labs/
     README.md
     worksheet.md
     answer-key.md
+    rendered/facilitator-page.html
 templates/
   claim-drift-harness-card.md
   harness-audit-lite-card.md

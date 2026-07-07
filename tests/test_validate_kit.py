@@ -3,6 +3,8 @@ import sys
 import unittest
 from pathlib import Path
 
+from scripts.validate_kit import check_facilitator_page
+
 
 class ValidateKitSmokeTest(unittest.TestCase):
     def test_validator_succeeds_against_repo_root(self):
@@ -23,6 +25,11 @@ class ValidateKitSmokeTest(unittest.TestCase):
             msg=f"stdout:\n{result.stdout}\nstderr:\n{result.stderr}",
         )
         self.assertIn("PASS kit validation succeeded", result.stdout)
+
+    def test_rendered_facilitator_page_has_required_headings(self):
+        repo_root = Path(__file__).resolve().parents[1]
+
+        self.assertEqual(check_facilitator_page(repo_root), [])
 
 
 if __name__ == "__main__":

@@ -18,6 +18,7 @@ REQUIRED_FILES = (
     "labs/ai-literacy-failure-mode-mini-lab/README.md",
     "labs/ai-literacy-failure-mode-mini-lab/worksheet.md",
     "labs/ai-literacy-failure-mode-mini-lab/answer-key.md",
+    "labs/ai-literacy-failure-mode-mini-lab/rendered/facilitator-page.html",
     "templates/agent-recovery-plan-card.md",
     "templates/claim-drift-harness-card.md",
     "templates/forecast-calibration-receipt.md",
@@ -43,6 +44,16 @@ BOUNDARY_CHECKS = {
     ),
     "no credentials/secrets": ("credentials", "secrets"),
 }
+
+FACILITATOR_PAGE = "labs/ai-literacy-failure-mode-mini-lab/rendered/facilitator-page.html"
+
+FACILITATOR_REQUIRED_HEADINGS = (
+    "Mini-Lab Flow",
+    "Materials",
+    "Facilitator Prompts",
+    "Answer-Key Boundary",
+    "Synthetic Example Note",
+)
 
 HIGH_CONFIDENCE_SECRET_PATTERNS = {
     "aws_access_key_id": re.compile(r"\bA[KS]IA[0-9A-Z]{16}\b"),
@@ -112,6 +123,16 @@ def check_public_boundary_language(root: Path) -> list[str]:
     return missing
 
 
+def check_facilitator_page(root: Path) -> list[str]:
+    path = root / FACILITATOR_PAGE
+    if not path.is_file():
+        return [f"missing rendered facilitator page: {FACILITATOR_PAGE}"]
+
+    text = read_text(path)
+    missing = [heading for heading in FACILITATOR_REQUIRED_HEADINGS if f"<h2>{heading}</h2>" not in text]
+    return [f"missing facilitator heading: {heading}" for heading in missing]
+
+
 def scan_markdown(root: Path) -> tuple[dict[str, set[str]], dict[str, set[str]], int]:
     secret_hits: dict[str, set[str]] = defaultdict(set)
     warning_hits: dict[str, set[str]] = defaultdict(set)
@@ -152,6 +173,13 @@ def validate(root: Path) -> int:
             + "\n".join(f"- {label}" for label in missing_boundaries)
         )
 
+    facilitator_errors = check_facilitator_page(root)
+    if facilitator_errors:
+        errors.append(
+            "Rendered facilitator page check failed:\n"
+            + "\n".join(f"- {error}" for error in facilitator_errors)
+        )
+
     secret_hits, warning_hits, markdown_count = scan_markdown(root)
     if secret_hits:
         errors.append(
@@ -173,7 +201,7 @@ def validate(root: Path) -> int:
     print(
         "PASS kit validation succeeded: "
         f"required_files={len(REQUIRED_FILES)} markdown_files={markdown_count} "
-        f"warning_categories={len(warning_hits)}"
+        f"warning_categories={len(warning_hits)} facilitator_page=ok"
     )
     return 0
 
