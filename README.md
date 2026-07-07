@@ -30,6 +30,16 @@ The goal is to make verification practical enough to teach, repeat, and improve.
 3. Use the answer key to discuss what changed in confidence after checking evidence.
 4. Try one template from `templates/` on a harmless synthetic example.
 
+## Facilitator Flow
+
+Use the lab as a short practice session, not a lecture:
+
+1. Give learners the worksheet before the answer key.
+2. Ask them to mark what each claim would need as evidence.
+3. Compare confidence before and after checking the synthetic source trail.
+4. Discuss which failures are accuracy failures, evidence failures, boundary failures, or recovery failures.
+5. Close by filling out one template as a group.
+
 ## Repository map
 
 ```text
@@ -54,8 +64,8 @@ examples/
 Run the local validator and smoke test before public review:
 
 ```bash
-python3 scripts/validate_kit.py
-python3 -m unittest discover -s tests
+PYTHONDONTWRITEBYTECODE=1 python3 scripts/validate_kit.py
+PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests
 ```
 
 ## Public-safety boundary
@@ -81,6 +91,10 @@ Use synthetic examples unless you have explicit rights and a strong reason to pu
 - Source-backed publishing workflows.
 - Lightweight agent/tool-run retrospectives.
 - Public-interest AI literacy exercises.
+
+## Open Lab Fit
+
+This repo is part of the Hypernovelty Open Lab public proof footprint. See `docs/open-lab-positioning.md` for how the mini-labs and templates connect to source cards, agent receipts, workflow screens, school readiness review, and the umbrella survival kit.
 
 ## License
 
